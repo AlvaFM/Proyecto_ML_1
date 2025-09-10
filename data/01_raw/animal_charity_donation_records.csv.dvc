@@ -1,0 +1,5 @@
+outs:
+- md5: 66b383d3a9162ee52fcaa53ed0d11f25
+  size: 1887358
+  hash: md5
+  path: animal_charity_donation_records.csv

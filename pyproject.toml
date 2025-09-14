@@ -28,3 +28,6 @@ attr = "dino_project.__version__"
 [tool.setuptools.packages.find]
 where = [ "src",]
 namespaces = false
+
+[tool.kedro_telemetry]
+project_id = "320e68a969d04628bca887628a82d853"

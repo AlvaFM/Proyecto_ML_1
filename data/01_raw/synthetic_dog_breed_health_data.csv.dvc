@@ -1,5 +1,0 @@
-outs:
-- md5: 3ad3db702b1af41226431e3d4e8ef639
-  size: 1174023
-  hash: md5
-  path: synthetic_dog_breed_health_data.csv

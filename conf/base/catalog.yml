@@ -1,4 +1,42 @@
-# Here you can define all your datasets by using simple YAML syntax.
-#
-# Documentation for this file format can be found in "The Data Catalog"
-# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+animal_charity_donation_records:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/animal_charity_donation_records.csv
+  load_args:
+    sep: ","
+    encoding: "utf-8"
+
+synthetic_dog_breed_health_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/synthetic_dog_breed_health_data.csv
+  load_args:
+    sep: ","
+    encoding: "utf-8"
+
+aac_intakes_outcomes:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/aac_intakes_outcomes.csv
+  load_args:
+    sep: ","
+    encoding: "utf-8"
+
+
+cleaned_dog_breed:
+  type: pandas.CSVDataset 
+  filepath: data/02_intermediate/cleaned_dog_breed.csv
+  save_args:
+    index: false
+
+cleaned_charity_donations:
+  type: pandas.CSVDataset 
+  filepath: data/02_intermediate/cleaned_charity_donations.csv
+  save_args:
+    index: false   
+
+cleaned_dog_breed_notebook:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/cleaned_dog_breed_notebook.csv
+
+
+cleaned_charity_donations_notebook:
+  type: pandas.CSVDataset 
+  filepath: data/02_intermediate/cleaned_charity_donations_notebook.csv

@@ -1,0 +1,40 @@
+data_engineering:
+  # Estrategias de imputación
+  imputation_strategy:
+    numerical: "median"
+    categorical: "most_frequent"
+  
+  # Variables para escalado
+  scaling:
+    standard_scaler: ["Weight (lbs)"]
+    robust_scaler: ["Annual Vet Visits"]
+  
+  # Límites para winsorization (outliers)
+  outlier_limits:
+    lower_percentile: 0.05
+    upper_percentile: 0.95
+    iqr_multiplier: 1.5
+
+  # Variables para one-hot encoding
+  encode_columns:
+    - "Breed"
+    - "Breed Size"
+    - "Sex"
+    - "Spay/Neuter Status"
+    - "Daily Activity Level"
+    - "Diet"
+    - "Food Brand"
+    - "Other Pets in Household"
+    - "Medications"
+    - "Seizures"
+    - "Owner Activity Level"
+    - "Synthetic"
+
+
+
+
+
+donation_specific:
+    columns_to_drop: ["donor_id", "name", "email"]
+    amount_outlier_percentiles: [0.01, 0.99]
+    categorical_cols_to_encode: ["country", "payment_method", "referral_channel", "sector", "campaign"]

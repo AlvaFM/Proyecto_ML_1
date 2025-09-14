@@ -1,7 +1,7 @@
 # src/proyecto_ml/pipelines/data_engineering/pipeline.py
 
 from kedro.pipeline import Pipeline, node
-from .nodes import clean_donations_data, clean_charity_donations_data  # ← AGREGAR LA NUEVA FUNCIÓN
+from .nodes import clean_donations_data, clean_charity_donations_data, clean_aac_intakes_outcomes # ← AGREGAR LA NUEVA FUNCIÓN
 
 def create_pipeline(**kwargs):
     return Pipeline([
@@ -19,5 +19,13 @@ def create_pipeline(**kwargs):
             inputs=["animal_charity_donation_records", "params:data_engineering"],
             outputs="cleaned_charity_donations",  # ← NUEVO OUTPUT
             name="clean_charity_donations_node"
+        ),
+
+          # 3. Tercer dataset: Ingresos y salidas del refugio 
+       node(
+            func=clean_aac_intakes_outcomes,
+            inputs=["aac_intakes_outcomes", "params:aac_processing"],    # ← CORRECTO
+            outputs="cleaned_aac_intakes_outcomes",
+            name="clean_aac_intakes_outcomes"
         )
     ])

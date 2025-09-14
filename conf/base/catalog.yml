@@ -19,7 +19,6 @@ aac_intakes_outcomes:
     sep: ","
     encoding: "utf-8"
 
-
 cleaned_dog_breed:
   type: pandas.CSVDataset 
   filepath: data/02_intermediate/cleaned_dog_breed.csv
@@ -30,13 +29,22 @@ cleaned_charity_donations:
   type: pandas.CSVDataset 
   filepath: data/02_intermediate/cleaned_charity_donations.csv
   save_args:
-    index: false   
+    index: false
 
 cleaned_dog_breed_notebook:
   type: pandas.CSVDataset
   filepath: data/02_intermediate/cleaned_dog_breed_notebook.csv
 
-
 cleaned_charity_donations_notebook:
   type: pandas.CSVDataset 
   filepath: data/02_intermediate/cleaned_charity_donations_notebook.csv
+
+cleaned_aac_intakes_outcomes_notebook:
+  type: pandas.CSVDataset 
+  filepath: data/02_intermediate/cleaned_aac_intakes_outcomes_notebook.csv
+
+cleaned_aac_intakes_outcomes:
+  type: pandas.CSVDataset 
+  filepath: data/02_intermediate/cleaned_aac_intakes_outcomes.csv
+  save_args:
+    index: false

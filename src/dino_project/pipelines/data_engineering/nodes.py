@@ -99,3 +99,67 @@ def clean_charity_donations_data(df_raw, parameters: dict):
     df_encoded = pd.get_dummies(df_clean, columns=categorical_cols, prefix_sep='_', drop_first=True)
     
     return df_encoded
+
+def clean_aac_intakes_outcomes(df_aac: pd.DataFrame, parameters: dict) -> pd.DataFrame:
+    """Limpieza y transformación del dataset AAC"""
+    
+    # Verificar que los parámetros necesarios existen
+    required_params = ['animal_type_filter', 'null_imputation', 'health_mapping', 'positive_outcomes']
+    for param in required_params:
+        if param not in parameters:
+            raise ValueError(f"Parámetro requerido faltante: {param}")
+    
+    # Filtrado inicial con manejo de errores
+    animal_filter = parameters.get('animal_type_filter', 'Dog')
+    df_clean = df_aac[df_aac['animal_type'] == animal_filter].copy()
+    
+    # Eliminar duplicados
+    df_clean = df_clean.drop_duplicates(subset=['animal_id_intake'])
+    
+    # Manejo de nulos con valores por defecto
+    null_params = parameters.get('null_imputation', {})
+    df_clean['intake_condition'] = df_clean['intake_condition'].fillna(
+        null_params.get('intake_condition', 'Unknown')
+    )
+    df_clean['outcome_type'] = df_clean['outcome_type'].fillna(
+        null_params.get('outcome_type', 'Not Specified')
+    )
+    
+    # Ingeniería de variables con manejo seguro
+    health_mapping = parameters.get('health_mapping', {})
+    df_clean['health_status_intake'] = df_clean['intake_condition'].map(
+        lambda x: health_mapping.get(x, 0.5)
+    )
+    
+    positive_outcomes = parameters.get('positive_outcomes', [])
+    df_clean['positive_outcome'] = df_clean['outcome_type'].apply(
+        lambda x: 1 if x in positive_outcomes else 0
+    )
+    
+    # Segmentación por edad (opcional)
+    if 'age_upon_intake_(years)' in df_clean.columns:
+        age_bins = parameters.get('age_bins', [0, 1, 3, 7, 10, 20])
+        age_labels = parameters.get('age_labels', ['Cachorro', 'Joven', 'Adulto', 'Maduro', 'Senior'])
+        
+        df_clean['age_group'] = pd.cut(
+            df_clean['age_upon_intake_(years)'],
+            bins=age_bins,
+            labels=age_labels,
+            right=False
+        )
+    
+    # Tiempo en refugio en semanas (opcional)
+    if 'time_in_shelter_days' in df_clean.columns:
+        df_clean['shelter_stay_weeks'] = df_clean['time_in_shelter_days'] / 7
+    
+    # Selección de columnas finales
+    selected_columns = parameters.get('selected_columns', [])
+    available_columns = [col for col in selected_columns if col in df_clean.columns]
+    
+    # Si no hay columnas seleccionadas, mantener todas
+    if not available_columns:
+        available_columns = df_clean.columns.tolist()
+    
+    df_final = df_clean[available_columns].copy()
+    
+    return df_final

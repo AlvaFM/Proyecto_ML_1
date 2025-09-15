@@ -1,13 +1,10 @@
-# src/proyecto_ml/pipelines/data_engineering/nodes.py
-
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler, RobustScaler  # ← ¡AGREGA ESTO!
+from sklearn.preprocessing import StandardScaler, RobustScaler  
 
 def clean_donations_data(df_raw, parameters: dict):
     """Limpia los datos de donaciones usando parámetros configurables"""
-    
-    # Usar parámetros del YAML
+
     imputation_strategy = parameters["imputation_strategy"]
     scaling_vars = parameters["scaling"] 
     outlier_params = parameters["outlier_limits"]
@@ -25,7 +22,7 @@ def clean_donations_data(df_raw, parameters: dict):
                 # Imputar numéricas con mediana
                 df_clean[col] = df_clean[col].fillna(df_clean[col].median())
     
-    # 2. MANEJO DE OUTLIERS (winsorization)
+    # 2. MANEJO DE OUTLIERS
     numeric_vars = ['Weight (lbs)', 'Daily Walk Distance (miles)', 
                     'Play Time (hrs)', 'Annual Vet Visits']
     
@@ -37,7 +34,6 @@ def clean_donations_data(df_raw, parameters: dict):
             lower_bound = Q1 - outlier_params["iqr_multiplier"] * IQR
             upper_bound = Q3 + outlier_params["iqr_multiplier"] * IQR
             
-            # Aplicar winsorization
             df_clean[col] = np.where(df_clean[col] < lower_bound, lower_bound, df_clean[col])
             df_clean[col] = np.where(df_clean[col] > upper_bound, upper_bound, df_clean[col])
     
@@ -59,7 +55,7 @@ def clean_donations_data(df_raw, parameters: dict):
     # 4. CODIFICACIÓN DE VARIABLES CATEGÓRICAS
     df_encoded = df_clean.copy()
     for col in encode_cols:
-        if col in df_encoded.columns and col != 'Healthy':  # No codificar target
+        if col in df_encoded.columns and col != 'Healthy':  
             df_encoded = pd.get_dummies(df_encoded, columns=[col], 
                                       prefix_sep='_', drop_first=True)
     
@@ -94,7 +90,7 @@ def clean_charity_donations_data(df_raw, parameters: dict):
     df_clean['donation_year'] = df_clean['donation_date'].dt.year
     df_clean['donation_month'] = df_clean['donation_date'].dt.month
     
-    # 5. CODIFICACIÓN DE VARIABLES CATEGÓRICAS (LO QUE HICISTE EN NOTEBOOK)
+    # 5. CODIFICACIÓN DE VARIABLES CATEGÓRICAS 
     categorical_cols = ['country', 'payment_method', 'referral_channel', 'sector', 'campaign']
     df_encoded = pd.get_dummies(df_clean, columns=categorical_cols, prefix_sep='_', drop_first=True)
     

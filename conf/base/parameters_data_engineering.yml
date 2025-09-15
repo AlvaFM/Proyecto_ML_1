@@ -39,7 +39,6 @@ donation_specific:
     amount_outlier_percentiles: [0.01, 0.99]
     categorical_cols_to_encode: ["country", "payment_method", "referral_channel", "sector", "campaign"]
 
-# ESTA ES LA ESTRUCTURA CORRECTA:
 aac_processing:
   animal_type_filter: "Dog"
   null_imputation:

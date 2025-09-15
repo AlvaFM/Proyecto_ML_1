@@ -48,3 +48,10 @@ cleaned_aac_intakes_outcomes:
   filepath: data/02_intermediate/cleaned_aac_intakes_outcomes.csv
   save_args:
     index: false
+
+
+final_dataset:
+  type: pandas.CSVDataset
+  filepath: data/03_primary/final_dataset.csv
+  save_args:
+    index: false

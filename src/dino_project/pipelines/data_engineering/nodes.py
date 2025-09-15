@@ -163,3 +163,29 @@ def clean_aac_intakes_outcomes(df_aac: pd.DataFrame, parameters: dict) -> pd.Dat
     df_final = df_clean[available_columns].copy()
     
     return df_final
+
+
+
+
+def create_final_dataset(cleaned_dog_breed, cleaned_charity_donations, cleaned_aac_intakes_outcomes):
+    """
+    Une los tres datasets limpios en uno final para análisis.
+    Solo mantiene variables clave de cada dataset.
+    """
+    # Variables relevantes de cada dataset
+    dog_vars = ["Age", "Daily Walk Distance (miles)", "Play Time (hrs)", "Daily Activity Level", "Healthy"]
+    donation_vars = ["donation_amount", "donation_amount_log", "donation_year", "donation_month", "campaign"]
+    aac_vars = ["intake_condition", "health_status_intake", "outcome_type", "positive_outcome",
+                "age_upon_intake_(years)", "age_group", "shelter_stay_weeks"]
+
+    # Filtrar columnas existentes (seguridad)
+    df_dog = cleaned_dog_breed[[col for col in dog_vars if col in cleaned_dog_breed.columns]].copy()
+    df_donation = cleaned_charity_donations[[col for col in donation_vars if col in cleaned_charity_donations.columns]].copy()
+    df_aac = cleaned_aac_intakes_outcomes[[col for col in aac_vars if col in cleaned_aac_intakes_outcomes.columns]].copy()
+
+    # Concatenar horizontalmente
+    df_final = pd.concat([df_dog.reset_index(drop=True),
+                          df_donation.reset_index(drop=True),
+                          df_aac.reset_index(drop=True)], axis=1)
+
+    return df_final
